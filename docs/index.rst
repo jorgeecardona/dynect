@@ -9,11 +9,12 @@ Welcome to Dynect's documentation!
 
 :Date: |today|
 
-Contents:
-=========
-
 .. toctree::
    :maxdepth: 2
+
+   api
+   license
+
 
 Overview
 ========
@@ -42,12 +43,6 @@ You can use it to create a new record::
   dyn = Dynect('customer', 'username', 'password', 'zone.com')
   record = dyn.add_address('www.zone.com', '1.1.1.1')
   dyn.publish()
-
-
-License
-=======
-
-.. literalinclude:: ../LICENSE
 
 Indices and tables
 ==================
