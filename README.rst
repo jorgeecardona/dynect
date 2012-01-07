@@ -17,12 +17,12 @@ Usage
 Start a session::
 
     from dynect import Dynect
-    dyn = Dynect('customer_name')
-    dyn.login('username', 'password')
-
-Get a AAAA records::
-    r = dyn.AAAARecord('zone', 'fqdn', 'id')
-    print r
-     <AAAARecord fqdn=''>
+    dyn = Dynect('customer_name', 'username', 'password', 'www.test.com')
     
+    # Create a new address.
+    record = dyn.add_address('www.test.com', '1.1.1.1')
+    assert record.address = '1.1.1.1'
+    assert record.fqdn = 'www.test.com'
     
+    # Delete the address.
+    record.delete()
