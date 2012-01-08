@@ -274,7 +274,6 @@ class Dynect(object):
         addresses = response.content['data']
         return [Address.from_url(self, uri) for uri in addresses]
 
-    @login_required
     def remove_address(self, fqdn, address):
         " Remove an address of a domain."
 
