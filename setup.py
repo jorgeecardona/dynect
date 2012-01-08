@@ -5,7 +5,7 @@ here = lambda *x: join(abspath(dirname(__file__)), *x)
 
 setup(
     name='dynect',
-    version='0.0.5',
+    version='0.0.6',
     description='Wrapper library to Dynect API.',
     long_description=here('README.rst'),
     packages=['dynect'],
@@ -13,4 +13,5 @@ setup(
     author_email='jorgeecardona@gmail.com',
     install_requires=['distribute', 'requests', 'decorator'],
     setup_requires=['unittest2', 'mock', 'requests'],
-    test_suite='tests')
+    test_suite='tests',
+    url='http://github.com/jorgeecardona/dynect')

@@ -314,6 +314,8 @@ class Node(object):
 
 class DynectRecord(object):
 
+    _schema_data = {}
+
     def __init__(self, dyn, data=None, url=None):
         self.dyn = dyn
         self._data = data
@@ -333,45 +335,49 @@ class DynectRecord(object):
         if self._data == None:
             self._data = self.dyn.get(self._url).content['data']
 
-    @property
-    def url(self):
-        self._ensure_data()
-        return '/REST/%s/%s/%s/%d' % (
-            self._record_name, self.zone, self.fqdn, self.record_id)
-
-    @property
-    def zone(self):
-        self._ensure_data()
-        return self._data['zone']
-
-    @property
-    def record_id(self):
-        self._ensure_data()
-        return self._data['record_id']
-
-    @property
-    def fqdn(self):
-        self._ensure_data()
-        return self._data['fqdn']
-
     def delete(self):
         " Delete the record."
 
         response = self.dyn.delete(self.url)
         return response.content['job_id']
 
+    def __getattr__(self, name):
+        " Get the record attribute from the real data from the API."
+
+        if name not in self._schema_data:
+            raise AttributeError(
+                'This record has no attribute %s' % (name, ))
+
+        # Get the field schema.
+        schema = self._schema_data[name]
+
+        # Ensure data.
+        self._ensure_data()
+
+        # Walk in data.
+        data = self._data
+        for field in schema.split('.'):
+            if field not in data:
+                raise AttributeError(
+                    'This record has no attribute %s' % (name, ))
+            data = data[field]
+
+        # Finally return data
+        return data
+
 
 class Address(DynectRecord):
     " Define a lazy-object to get address information."
 
     _record_name = 'ARecord'
+    _schema_data = {
+        'fqdn': 'fqdn',
+        'record_id': 'record_id',
+        'address': 'rdata.address',
+        'zone': 'zone',
+        'ttl': 'ttl'}
 
     @property
-    def address(self):
-        self._ensure_data()
-        return self._data['rdata']['address']
-
-    @property
-    def ttl(self):
-        self._ensure_data()
-        return self._data['ttl']
+    def url(self):
+        return '/REST/ARecord/%s/%s/%d' % (
+            self.zone, self.fqdn, self.record_id)
