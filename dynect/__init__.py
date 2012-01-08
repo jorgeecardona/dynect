@@ -5,6 +5,7 @@ log = logging.getLogger('dynect')
 import requests
 import json
 from requests.auth import AuthBase
+from decorator import decorator
 
 
 class DynectAuth(AuthBase):
@@ -109,17 +110,17 @@ class DynectAuth(AuthBase):
         return r
 
 
-def login_required(f):
-    def wrap(self, *args, **kwargs):
-        try:
-            return f(self, *args, **kwargs)
-        except self.auth.CredentialsError, e:
-            raise e
-        except:
-            if hasattr(self.auth, '_token'):
-                delattr(self.auth, '_token')
-            return f(self, *args, **kwargs)
-    return wrap
+
+@decorator
+def login_required(f, self, *args, **kwargs):
+    try:
+        return f(self, *args, **kwargs)
+    except self.auth.CredentialsError, e:
+        raise e
+    except:
+        if hasattr(self.auth, '_token'):
+            delattr(self.auth, '_token')
+        return f(self, *args, **kwargs)
 
 
 class Dynect(object):
@@ -350,7 +351,8 @@ class DynectRecord(object):
         return self._data['fqdn']
 
     def delete(self):
-        " Delete the address."
+        " Delete the record."
+
         response = self.dyn.delete(self.url)
         return response.content['job_id']
 

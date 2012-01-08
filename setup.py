@@ -10,6 +10,6 @@ setup(
     long_description=here('README.rst'),
     author='Jorge Eduardo Cardona',
     author_email='jorgeecardona@gmail.com',
-    install_requires=['distribute', 'requests'],
+    install_requires=['distribute', 'requests', 'decorator'],
     setup_requires=['unittest2', 'mock', 'requests'],
     test_suite='tests')
