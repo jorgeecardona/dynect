@@ -284,10 +284,16 @@ class Dynect(object):
                 record.delete()
                 break
 
-    @login_required
     def get_node(self, fqdn):
         " Get a node from the fqdn."
+
         return Node(self, fqdn=fqdn)
+
+    def delete_node(self, fqdn):
+        " Shorcut to delete a node."
+
+        node = self.get_node(fqdn)
+        return node.delete()
 
 
 class Node(object):
@@ -313,7 +319,12 @@ class Node(object):
 
 
 class DynectRecord(object):
-
+    """
+    This class represents a general record in the DNS. A particular record
+    must define its _schema_data in order to expose the attributes in
+    a proper way.
+    """
+    # Default values.
     _schema_data = {}
 
     def __init__(self, dyn, data=None, url=None):
