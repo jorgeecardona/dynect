@@ -30,11 +30,15 @@ class DynectAuth(AuthBase):
         if hasattr(self, '_token'):
             return getattr(self, '_token')
 
+        # Json formatted auth.
+        data = json.dumps({'customer_name': self.customer,
+                           'user_name': self.username,
+                           'password': self.password})
+
         # Start session.
         response = requests.post(
-            'https://api2.dynect.net/REST/Session/', data={
-                'customer_name': self.customer, 'user_name': self.username,
-                'password': self.password})
+            'https://api2.dynect.net/REST/Session/', data=data,
+            headers={'Content-Type': 'application/json'})
 
         # convert to data.
         content = json.loads(response.content)
