@@ -5,7 +5,7 @@ here = lambda *x: join(abspath(dirname(__file__)), *x)
 
 setup(
     name='dynect',
-    version='0.0.2',
+    version='0.0.3',
     description='Wrapper library to Dynect API.',
     long_description=here('README.rst'),
     author='Jorge Eduardo Cardona',
