@@ -303,12 +303,12 @@ class Node(object):
 
     @property
     def url(self):
-        return '/REST/ZoneList/%s/%s' % (
+        return '/REST/NodeList/%s/%s' % (
             self.dyn.zone, self.fqdn)
 
     @property
     def delete_url(self):
-        return '/REST/Zone/%s/%s' % (
+        return '/REST/Node/%s/%s' % (
             self.dyn.zone, self.fqdn)
 
     def delete(self):
